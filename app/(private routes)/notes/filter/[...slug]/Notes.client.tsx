@@ -1,0 +1,81 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useDebounce } from "use-debounce";
+import { fetchNotes, type FetchNotesResponse } from "@/lib/api/clientApi";
+import { FilterTag } from "@/types/note";
+import css from "./NotesPage.module.css";
+
+import NoteList from "@/components/NoteList/NoteList";
+import SearchBox from "@/components/SearchBox/SearchBox";
+import Pagination from "@/components/Pagination/Pagination";
+import Loader from "@/components/Loader/Loader";
+import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
+import Link from "next/link";
+
+type NotesProps = {
+  tag?: FilterTag;
+};
+
+const Notes = ({ tag }: NotesProps) => {
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [debouncedSearch] = useDebounce(search, 500);
+
+  useEffect(() => {
+    setPage(1);
+  }, [tag]);
+
+  const { data, isLoading, isFetching, isError } = useQuery<
+    FetchNotesResponse,
+    Error
+  >({
+    queryKey: ["notes", { page, perPage: 12, search: debouncedSearch, tag }],
+    queryFn: () =>
+      fetchNotes({
+        page,
+        perPage: 12,
+        ...(debouncedSearch.trim() ? { search: debouncedSearch.trim() } : {}),
+        ...(tag && tag !== "All" ? { tag } : {}),
+      }),
+    refetchOnMount: false,
+    placeholderData: (previousData) => previousData,
+  });
+
+  const handleSearch = (value: string) => {
+    setSearch(value);
+    setPage(1);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
+  return (
+    <div className={css.app}>
+      <header className={css.toolbar}>
+        <SearchBox value={search} onChange={handleSearch} />
+        {data && data.totalPages > 1 && (
+          <Pagination
+            page={page}
+            totalPages={data.totalPages}
+            onPageChange={handlePageChange}
+          />
+        )}
+        <Link href="/notes/action/create" className={css.button}>
+          Create note +
+        </Link>
+      </header>
+      <main>
+        {(isLoading || isFetching) && <Loader />}
+        {isError && <ErrorMessage />}
+        {data?.notes && data.notes.length > 0 && !isFetching && (
+          <NoteList notes={data.notes} />
+        )}
+      </main>
+    </div>
+  );
+};
+
+export default Notes;
