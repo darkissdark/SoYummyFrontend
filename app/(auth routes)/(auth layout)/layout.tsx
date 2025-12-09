@@ -31,10 +31,9 @@ export default function PublicLayout({ children }: Props) {
             <div
               className="
                   w-[100%] h-0
-                  border-[10rem] border-solid
-                  md:border-[17rem] border-solid
-                  border-l-[var(--secondary-background)] 
-                  border-r-[var(--secondary-background)]
+                  border-[10rem] 
+                  border-solid
+                  md:border-[17rem] 
                   border-b-[var(--secondary-background)] 
                   border-t-[var(--primary-background-light)]
                   border-t-[3rem]
