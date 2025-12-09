@@ -30,7 +30,7 @@ export const fetchServerNotes = async (
 
 export const checkServerSession = async () => {
   const cookieStore = await cookies();
-  const res = await api.get("/auth/session", {
+  const res = await api.post("/auth/refresh", {
     headers: {
       Cookie: cookieStore.toString(),
     },

@@ -11,6 +11,11 @@
 
   --disabled-button-background: #d9d9d9;
   --disabled-button-color: #23262a;
+
+  --primary-color: #fafafa;
+  --primary-background: #2a2c36;
+  --secondary-background: #1e1f28;
+  --primary-background-light: #fafafa;
 }
 
 /* @media (prefers-color-scheme: dark) {

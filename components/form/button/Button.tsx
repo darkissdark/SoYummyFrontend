@@ -3,10 +3,10 @@ import { ButtonHTMLAttributes, ReactNode } from "react";
 
 type ButtonVariant = "primary" | "secondary" | "transparent";
 
-const BASE_CLASSES = 
-  "inline-flex justify-center items-center font-normal leading-[1.2] " +
+const BASE_CLASSES =
+  "inline-flex justify-center items-center font-normal leading-[18px] " +
   "px-6 py-3 text-[14px] transition-all duration-250 ease-in-out " +
-  "md:px-11 md:py-[22px] md:text-[16px]"; 
+  "md:px-11 md:py-[22px] md:text-[16px]";
 
 const getVariantClasses = (variant: ButtonVariant) => {
   switch (variant) {
@@ -41,7 +41,10 @@ interface BaseButtonProps {
 
 interface ButtonAsButtonProps
   extends BaseButtonProps,
-    Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children" | "color" | "className"> {
+    Omit<
+      ButtonHTMLAttributes<HTMLButtonElement>,
+      "children" | "color" | "className"
+    > {
   as?: "button";
 }
 
@@ -52,7 +55,6 @@ interface ButtonAsLinkProps
 }
 
 export type ButtonProps = ButtonAsButtonProps | ButtonAsLinkProps;
-
 
 export function Button(props: ButtonProps) {
   const {
@@ -73,17 +75,14 @@ export function Button(props: ButtonProps) {
     color === "white" ? "text-[var(--primary-button-color)]" : "",
     fullWidth ? "w-full" : "",
     className,
-  ].filter(Boolean).join(" ");
-  
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   if ("as" in restProps && restProps.as === "link") {
     const { as, ...linkProps } = restProps;
     return (
-      <Link
-        data-link={as}
-        className={dynamicClasses}
-        {...linkProps}
-      >
+      <Link data-link={as} className={dynamicClasses} {...linkProps}>
         {children}
       </Link>
     );

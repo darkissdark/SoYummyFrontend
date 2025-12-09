@@ -14,12 +14,12 @@ export const getMe = async () => {
 };
 
 type CheckSessionRequest = {
-  success: boolean;
+  authorized: boolean;
 };
 
 export const checkSession = async () => {
-  const res = await api.get<CheckSessionRequest>("/auth/session");
-  return res.data.success;
+  const res = await api.post<CheckSessionRequest>("/auth/refresh");
+  return res.data.authorized;
 };
 
 export const logout = async (): Promise<void> => {
