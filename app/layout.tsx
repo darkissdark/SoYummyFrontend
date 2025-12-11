@@ -4,6 +4,7 @@ import "./globals.css";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 import { SITE_NAME, OG_IMAGE, SITE_DOMAIN } from "@/config/metadata";
 import AuthProvider from "@/components/AuthProvider/AuthProvider";
+import { Toaster } from "react-hot-toast";
 import css from "@/app/(public routes)/page.module.css";
 
 const roboto = Poppins({
@@ -45,6 +46,29 @@ export default function RootLayout({
           <AuthProvider>
             <main className={css.main}>{children}</main>
             {modal}
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                duration: 4000,
+                style: {
+                  background: "#1e1e1e",
+                  color: "#fff",
+                  border: "1px solid #333",
+                },
+                success: {
+                  iconTheme: {
+                    primary: "#10b981",
+                    secondary: "#fff",
+                  },
+                },
+                error: {
+                  iconTheme: {
+                    primary: "#ef4444",
+                    secondary: "#fff",
+                  },
+                },
+              }}
+            />
           </AuthProvider>
         </TanStackProvider>
       </body>
